@@ -56,6 +56,6 @@ typings/
 
 # dotenv environment variables file
 .env
-
+.DsStore
 # next.js build output
 .next
