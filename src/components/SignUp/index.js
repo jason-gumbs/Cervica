@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { Link, withRouter } from 'react-router-dom';
 
-import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
     <div>
         <h1>SignUp</h1>
-        <SignInForm />
-        <SignUpLink />
+        <SignUpForm />
     </div>
 );
 
@@ -104,11 +101,14 @@ class SignUpFormBase extends Component {
     }
 }
 
+const SignUpLink = () => (
+    <p>
+        Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+    </p>
+);
 
-const SignUpForm = compose(
-    withRouter,
-    withFirebase,
-)(SignUpFormBase);
+const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+
 export default SignUpPage;
 
-export { SignUpForm };
+export { SignUpForm, SignUpLink };
