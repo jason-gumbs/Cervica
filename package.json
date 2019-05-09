@@ -7,14 +7,16 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.0"
+    "react-scripts": "3.0.0",
+    "recompose": "^0.30.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "NODE_ENV=production && npm run start"
+    "dev": "NODE_ENV=production && npm run start",
+    "lint": "./node_modules/.bin/eslint --ext js,jsx --max-warnings 0 ."
   },
   "eslintConfig": {
     "extends": "react-app"
