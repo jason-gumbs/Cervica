@@ -142,19 +142,11 @@ class SignInGoogleBase extends Component {
         const {error} = this.state;
 
         return (
-            <div>
-            <form onSubmit={this.onSubmit}>
-                <div>
-                <FontAwesomeIcon icon="faStroopwafel" />
-                </div>
-                Sign In with Google
 
-                {error && <p>{error.message}</p>}
-            </form>
-                <div>
-                    Favorite Food: <FontAwesomeIcon icon={['fab', 'google']} size="lg" color="green"  />
+                <div onClick={this.onSubmit}>
+                    Sign In with Google: <FontAwesomeIcon icon={['fab', 'google']} size="5x" color="green"  />
+                    {error && <p>{error.message}</p>}
                 </div>
-            </div>
         );
     }
 }
@@ -196,11 +188,10 @@ class SignInFacebookBase extends Component {
         const {error} = this.state;
 
         return (
-            <form onSubmit={this.onSubmit}>
-                <button type="submit">Sign In with Facebook</button>
-
+            <div onClick={this.onSubmit}>
+                Sign In with Facebook: <FontAwesomeIcon icon={['fab', 'facebook']} size="5x" color="green"  />
                 {error && <p>{error.message}</p>}
-            </form>
+            </div>
         );
     }
 }
