@@ -6,12 +6,19 @@ import {withFirebase} from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import {Button, Form, Container} from "react-bootstrap";
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {fab} from '@fortawesome/free-brands-svg-icons'
+import {fas} from '@fortawesome/free-solid-svg-icons'
 
+library.add(fab, fas);
 const SignUpPage = () => (
     <div>
-        <Container>
-        <h1>SignUp</h1>
-        <SignUpForm/>
+        <Container style={{
+            width: "40%", padding: "5%", backgroundColor: "#f8f9fa", borderRadius: 35
+        }}>
+            <h1>SignUp</h1>
+            <SignUpForm/>
         </Container>
     </div>
 );
@@ -146,9 +153,10 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-    <p>
-        Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-    </p>
+    <Link
+        to={ROUTES.SIGN_UP} style={{color: "white"}}>
+        <Button variant="danger" block><FontAwesomeIcon icon={['fas', 'user-circle']} size="1x" color="white"/> Sign Up
+        </Button></Link>
 );
 
 const SignUpForm = compose(

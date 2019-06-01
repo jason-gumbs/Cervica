@@ -1,29 +1,27 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import {compose} from 'recompose';
-import {Form, Button, Container} from 'react-bootstrap'
+import {Form, Button, Container, Row, Col} from 'react-bootstrap'
 import {SignUpLink} from '../SignUp';
 import {PasswordForgetLink} from '../PasswordForget';
 import {withFirebase} from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStroopwafel } from '@fortawesome/free-solid-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {fab} from '@fortawesome/free-brands-svg-icons'
+import {fas} from '@fortawesome/free-solid-svg-icons'
 
-
-library.add(fab, faStroopwafel)
+library.add(fab, fas);
 
 const SignInPage = () => (
     <div>
-        <Container>
-        <h1>SignIn</h1>
-        <SignInForm/>
-        <SignInGoogle/>
-        <SignInFacebook/>
-        <SignInTwitter/>
-        <PasswordForgetLink/>
-        <SignUpLink/>
+        <Container style={{width: "40%", padding: "5%", backgroundColor: "#f8f9fa", borderRadius: 35
+        }}>
+            <h1 className="text-center">Sign In</h1>
+            <br/>
+            <SignInForm/>
+            <PasswordForgetLink/>
+            <SignUpLink/>
         </Container>
     </div>
 );
@@ -78,15 +76,22 @@ class SignInFormBase extends Component {
         const isInvalid = password === '' || email === '';
 
         return (
-<div>
+            <div>
                 <Form>
+                    <Row>
+                        <Col>
+                            <SignInGoogle/>
+                        </Col>
+                        <Col>
+                            <SignInFacebook/>
+                        </Col>
+                    </Row>
+                    <br/>
+                    <h2 className="text-center">OR</h2>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control type="email" name="email" value={email}
                                       onChange={this.onChange} placeholder="Enter email"/>
-                        <Form.Text className="text-muted">
-                            We'll never share your email with anyone else.
-                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
@@ -95,12 +100,13 @@ class SignInFormBase extends Component {
                                       value={password}
                                       onChange={this.onChange} placeholder="Password"/>
                     </Form.Group>
-                    <Button variant="primary" disabled={isInvalid}  onClick={this.onSubmit}>
-                        Sign In
+                    <Button variant="primary" disabled={isInvalid} onClick={this.onSubmit} block><FontAwesomeIcon
+                        icon={['fas', 'sign-in-alt']} size="1x" color="white"/> Sign In
                     </Button>
                     {error && <p>{error.message}</p>}
                 </Form>
-</div>
+                <hr/>
+            </div>
         );
     }
 }
@@ -143,10 +149,12 @@ class SignInGoogleBase extends Component {
 
         return (
 
-                <div onClick={this.onSubmit}>
-                    Sign In with Google: <FontAwesomeIcon icon={['fab', 'google']} size="5x" color="green"  />
-                    {error && <p>{error.message}</p>}
-                </div>
+            <div onClick={this.onSubmit}>
+                <Button variant="info" block> <FontAwesomeIcon icon={['fab', 'google']} size="1x" color="white"/> Sign
+                    In with
+                    Google</Button>
+                {error && <p>{error.message}</p>}
+            </div>
         );
     }
 }
@@ -189,58 +197,15 @@ class SignInFacebookBase extends Component {
 
         return (
             <div onClick={this.onSubmit}>
-                Sign In with Facebook: <FontAwesomeIcon icon={['fab', 'facebook']} size="5x" color="green"  />
+                <Button variant="success" block> <FontAwesomeIcon icon={['fab', 'facebook']} size="1x"
+                                                                  color="white"/> Sign In
+                    with Facebook</Button>
                 {error && <p>{error.message}</p>}
             </div>
         );
     }
 }
 
-class SignInTwitterBase extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {error: null};
-    }
-
-    onSubmit = event => {
-        this.props.firebase
-            .doSignInWithTwitter()
-            .then(socialAuthUser => {
-                // Create a user in your Firebase Realtime Database too
-                return this.props.firebase.user(socialAuthUser.user.uid).set({
-                    username: socialAuthUser.additionalUserInfo.profile.name,
-                    email: socialAuthUser.additionalUserInfo.profile.email,
-                    roles: {},
-                });
-            })
-            .then(() => {
-                this.setState({error: null});
-                this.props.history.push(ROUTES.HOME);
-            })
-            .catch(error => {
-                if (error.code === ERROR_CODE_ACCOUNT_EXISTS) {
-                    error.message = ERROR_MSG_ACCOUNT_EXISTS;
-                }
-
-                this.setState({error});
-            });
-
-        event.preventDefault();
-    };
-
-    render() {
-        const {error} = this.state;
-
-        return (
-            <form onSubmit={this.onSubmit}>
-                <button type="submit">Sign In with Twitter</button>
-
-                {error && <p>{error.message}</p>}
-            </form>
-        );
-    }
-}
 
 const SignInForm = compose(
     withRouter,
@@ -257,11 +222,7 @@ const SignInFacebook = compose(
     withFirebase,
 )(SignInFacebookBase);
 
-const SignInTwitter = compose(
-    withRouter,
-    withFirebase,
-)(SignInTwitterBase);
 
 export default SignInPage;
 
-export {SignInForm, SignInGoogle, SignInFacebook, SignInTwitter};
+export {SignInForm, SignInGoogle, SignInFacebook};
